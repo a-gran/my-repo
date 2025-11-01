@@ -110,62 +110,56 @@ class EnglishKeyboardVisualizer:
         keyboard_container.grid(row=2, column=0, sticky='nsew')
         self.main_frame.rowconfigure(2, weight=1)
 
-        # Создание рядов клавиш
-        for row_idx, row in enumerate(self.keyboard_layout):
-            keyboard_container.rowconfigure(row_idx, weight=1)
-            row_frame = tk.Frame(keyboard_container, bg='#2b2b2b')
-            row_frame.grid(row=row_idx, column=0, sticky='nsew', pady=5)
-            row_frame.rowconfigure(0, weight=1)
+        # Создание рядов клавиш - используем enumerate для получения всех комбинаций row_idx, col_idx
+        layout_items = [(row_idx, col_idx, key)
+                       for row_idx, row in enumerate(self.keyboard_layout)
+                       for col_idx, key in enumerate(row)]
 
-            for col_idx, key in enumerate(row):
-                weight = self.position_weights.get((row_idx, col_idx), 4)
-                row_frame.columnconfigure(col_idx, weight=weight)
+        row_frames = {}
 
-                base_key = key.split('|')[0].strip() if '|' in key else key
-                if base_key.upper() in ['F', 'J']:
-                    bg_color = '#5a5a5a'
-                else:
-                    bg_color = '#404040'
+        # Обрабатываем все элементы без вложенных циклов
+        for row_idx, col_idx, key in layout_items:
+            # Создаем row_frame если еще не создан
+            if row_idx not in row_frames:
+                keyboard_container.rowconfigure(row_idx, weight=1)
+                row_frame = tk.Frame(keyboard_container, bg='#2b2b2b')
+                row_frame.grid(row=row_idx, column=0, sticky='nsew', pady=5)
+                row_frame.rowconfigure(0, weight=1)
+                row_frames[row_idx] = row_frame
+            else:
+                row_frame = row_frames[row_idx]
 
-                button_size = max(6, int(10 * self.scale_factor))
-                btn = tk.Label(
-                    row_frame,
-                    text=key,
-                    relief=tk.RAISED,
-                    bg=bg_color,
-                    fg='#ffffff',
-                    font=('Arial', button_size, 'bold'),
-                    borderwidth=2,
-                    width=1
-                )
-                btn.grid(row=0, column=col_idx, sticky='nsew', padx=5, pady=0)
+            weight = self.position_weights.get((row_idx, col_idx), 4)
+            row_frame.columnconfigure(col_idx, weight=weight)
 
-                if '|' in key:
-                    symbols = [s.strip() for s in key.split('|')]
-                    for symbol in symbols:
-                        symbol_lower = symbol.lower()
-                        if symbol_lower not in self.buttons:
-                            self.buttons[symbol_lower] = []
-                        self.buttons[symbol_lower].append(btn)
-                        symbol_upper = symbol.upper()
-                        if symbol_upper != symbol_lower:
-                            if symbol_upper not in self.buttons:
-                                self.buttons[symbol_upper] = []
-                            self.buttons[symbol_upper].append(btn)
-                else:
-                    key_lower = key.lower()
-                    if key_lower not in self.buttons:
-                        self.buttons[key_lower] = []
-                    self.buttons[key_lower].append(btn)
-                    key_upper = key.upper()
-                    if key_upper != key_lower:
-                        if key_upper not in self.buttons:
-                            self.buttons[key_upper] = []
-                        self.buttons[key_upper].append(btn)
+            base_key = key.split('|')[0].strip() if '|' in key else key
+            bg_color = '#5a5a5a' if base_key.upper() in ['F', 'J'] else '#404040'
 
-                self.button_colors[btn] = bg_color
-                self.button_widgets.append(btn)
-                self.button_positions[(row_idx, col_idx)] = btn
+            button_size = max(6, int(10 * self.scale_factor))
+            btn = tk.Label(
+                row_frame,
+                text=key,
+                relief=tk.RAISED,
+                bg=bg_color,
+                fg='#ffffff',
+                font=('Arial', button_size, 'bold'),
+                borderwidth=2,
+                width=1
+            )
+            btn.grid(row=0, column=col_idx, sticky='nsew', padx=5, pady=0)
+
+            # Регистрируем символы для кнопки
+            symbols = [s.strip() for s in key.split('|')] if '|' in key else [key]
+            for symbol in symbols:
+                symbol_lower = symbol.lower()
+                self.buttons.setdefault(symbol_lower, []).append(btn)
+                symbol_upper = symbol.upper()
+                if symbol_upper != symbol_lower:
+                    self.buttons.setdefault(symbol_upper, []).append(btn)
+
+            self.button_colors[btn] = bg_color
+            self.button_widgets.append(btn)
+            self.button_positions[(row_idx, col_idx)] = btn
 
         keyboard_container.columnconfigure(0, weight=1)
 
@@ -327,62 +321,56 @@ class RussianKeyboardVisualizer:
         keyboard_container.grid(row=2, column=0, sticky='nsew')
         self.main_frame.rowconfigure(2, weight=1)
 
-        # Создание рядов клавиш
-        for row_idx, row in enumerate(self.keyboard_layout):
-            keyboard_container.rowconfigure(row_idx, weight=1)
-            row_frame = tk.Frame(keyboard_container, bg='#2b2b2b')
-            row_frame.grid(row=row_idx, column=0, sticky='nsew', pady=5)
-            row_frame.rowconfigure(0, weight=1)
+        # Создание рядов клавиш - используем enumerate для получения всех комбинаций row_idx, col_idx
+        layout_items = [(row_idx, col_idx, key)
+                       for row_idx, row in enumerate(self.keyboard_layout)
+                       for col_idx, key in enumerate(row)]
 
-            for col_idx, key in enumerate(row):
-                weight = self.position_weights.get((row_idx, col_idx), 4)
-                row_frame.columnconfigure(col_idx, weight=weight)
+        row_frames = {}
 
-                base_key = key.split('|')[0].strip() if '|' in key else key
-                if base_key.upper() in ['А', 'О']:
-                    bg_color = '#5a5a5a'
-                else:
-                    bg_color = '#404040'
+        # Обрабатываем все элементы без вложенных циклов
+        for row_idx, col_idx, key in layout_items:
+            # Создаем row_frame если еще не создан
+            if row_idx not in row_frames:
+                keyboard_container.rowconfigure(row_idx, weight=1)
+                row_frame = tk.Frame(keyboard_container, bg='#2b2b2b')
+                row_frame.grid(row=row_idx, column=0, sticky='nsew', pady=5)
+                row_frame.rowconfigure(0, weight=1)
+                row_frames[row_idx] = row_frame
+            else:
+                row_frame = row_frames[row_idx]
 
-                button_size = max(6, int(10 * self.scale_factor))
-                btn = tk.Label(
-                    row_frame,
-                    text=key,
-                    relief=tk.RAISED,
-                    bg=bg_color,
-                    fg='#ffffff',
-                    font=('Arial', button_size, 'bold'),
-                    borderwidth=2,
-                    width=1
-                )
-                btn.grid(row=0, column=col_idx, sticky='nsew', padx=5, pady=0)
+            weight = self.position_weights.get((row_idx, col_idx), 4)
+            row_frame.columnconfigure(col_idx, weight=weight)
 
-                if '|' in key:
-                    symbols = [s.strip() for s in key.split('|')]
-                    for symbol in symbols:
-                        symbol_lower = symbol.lower()
-                        if symbol_lower not in self.buttons:
-                            self.buttons[symbol_lower] = []
-                        self.buttons[symbol_lower].append(btn)
-                        symbol_upper = symbol.upper()
-                        if symbol_upper != symbol_lower:
-                            if symbol_upper not in self.buttons:
-                                self.buttons[symbol_upper] = []
-                            self.buttons[symbol_upper].append(btn)
-                else:
-                    key_lower = key.lower()
-                    if key_lower not in self.buttons:
-                        self.buttons[key_lower] = []
-                    self.buttons[key_lower].append(btn)
-                    key_upper = key.upper()
-                    if key_upper != key_lower:
-                        if key_upper not in self.buttons:
-                            self.buttons[key_upper] = []
-                        self.buttons[key_upper].append(btn)
+            base_key = key.split('|')[0].strip() if '|' in key else key
+            bg_color = '#5a5a5a' if base_key.upper() in ['А', 'О'] else '#404040'
 
-                self.button_colors[btn] = bg_color
-                self.button_widgets.append(btn)
-                self.button_positions[(row_idx, col_idx)] = btn
+            button_size = max(6, int(10 * self.scale_factor))
+            btn = tk.Label(
+                row_frame,
+                text=key,
+                relief=tk.RAISED,
+                bg=bg_color,
+                fg='#ffffff',
+                font=('Arial', button_size, 'bold'),
+                borderwidth=2,
+                width=1
+            )
+            btn.grid(row=0, column=col_idx, sticky='nsew', padx=5, pady=0)
+
+            # Регистрируем символы для кнопки
+            symbols = [s.strip() for s in key.split('|')] if '|' in key else [key]
+            for symbol in symbols:
+                symbol_lower = symbol.lower()
+                self.buttons.setdefault(symbol_lower, []).append(btn)
+                symbol_upper = symbol.upper()
+                if symbol_upper != symbol_lower:
+                    self.buttons.setdefault(symbol_upper, []).append(btn)
+
+            self.button_colors[btn] = bg_color
+            self.button_widgets.append(btn)
+            self.button_positions[(row_idx, col_idx)] = btn
 
         keyboard_container.columnconfigure(0, weight=1)
 
