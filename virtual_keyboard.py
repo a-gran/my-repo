@@ -47,6 +47,9 @@ class VirtualKeyboard:
         # Состояние Caps Lock
         self.caps_lock_on = False
 
+        # Состояние Shift (зажат или нет)
+        self.shift_pressed = False
+
         # Английская раскладка клавиатуры (основной символ | символ с Shift)
         self.keyboard_layout_en = [
             ['ESC', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'],
@@ -395,9 +398,12 @@ class VirtualKeyboard:
             if self.current_language == 'RU' and char in self.en_to_ru_map:
                 char = self.en_to_ru_map[char]
 
-            # Применяем Caps Lock для букв
+            # Применяем Caps Lock и Shift для букв
             if char.isalpha():
-                if self.caps_lock_on:
+                # Логика: Caps Lock XOR Shift
+                # Если только Caps Lock или только Shift - заглавные
+                # Если оба или ни одного - строчные
+                if self.caps_lock_on != self.shift_pressed:  # XOR логика
                     char = char.upper()
                 else:
                     char = char.lower()
@@ -446,8 +452,25 @@ class VirtualKeyboard:
         except AttributeError:
             # Специальная клавиша
             key_name = str(key).replace('Key.', '')
+
+            # Отслеживаем нажатие Shift
+            if key_name in ['shift', 'shift_r']:
+                self.shift_pressed = True
+
             self.root.after(0, lambda: self.highlight_key(key_name))
             self.root.after(0, lambda: self.handle_special_key(key_name))
+
+    def on_release(self, key):
+        """Обработка отпускания клавиши"""
+        try:
+            # Специальная клавиша
+            key_name = str(key).replace('Key.', '')
+
+            # Отслеживаем отпускание Shift
+            if key_name in ['shift', 'shift_r']:
+                self.shift_pressed = False
+        except AttributeError:
+            pass
 
     def get_keyboard_language(self):
         """Определение текущего языка клавиатуры в Windows"""
@@ -533,7 +556,7 @@ class VirtualKeyboard:
 
     def start_listener(self):
         """Запуск слушателя клавиатуры"""
-        with keyboard.Listener(on_press=self.on_press) as listener:
+        with keyboard.Listener(on_press=self.on_press, on_release=self.on_release) as listener:
             listener.join()
 
     def run(self):
