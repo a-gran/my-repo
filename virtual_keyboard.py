@@ -194,7 +194,7 @@ class VirtualKeyboard:
                 )
                 btn.grid(row=0, column=col_idx, sticky='nsew', padx=5, pady=0)
 
-                # Сохранение кнопки в словаре для всех символов на клавише
+                # Сохранение кнопки в словаре для всех символов на клавише ТЕКУЩЕЙ раскладки
                 # Если есть "|", добавляем кнопку для обоих символов
                 if '|' in key:
                     symbols = [s.strip() for s in key.split('|')]
@@ -220,6 +220,33 @@ class VirtualKeyboard:
                         if key_upper not in self.buttons:
                             self.buttons[key_upper] = []
                         self.buttons[key_upper].append(btn)
+
+                # ДОБАВЛЯЕМ также кнопку для символов из ДРУГОЙ раскладки на той же позиции
+                other_layout = self.keyboard_layout_ru if self.current_language == 'EN' else self.keyboard_layout_en
+                if row_idx < len(other_layout) and col_idx < len(other_layout[row_idx]):
+                    other_key = other_layout[row_idx][col_idx]
+                    if '|' in other_key:
+                        symbols = [s.strip() for s in other_key.split('|')]
+                        for symbol in symbols:
+                            symbol_lower = symbol.lower()
+                            if symbol_lower not in self.buttons:
+                                self.buttons[symbol_lower] = []
+                            self.buttons[symbol_lower].append(btn)
+                            symbol_upper = symbol.upper()
+                            if symbol_upper != symbol_lower:
+                                if symbol_upper not in self.buttons:
+                                    self.buttons[symbol_upper] = []
+                                self.buttons[symbol_upper].append(btn)
+                    else:
+                        other_key_lower = other_key.lower()
+                        if other_key_lower not in self.buttons:
+                            self.buttons[other_key_lower] = []
+                        self.buttons[other_key_lower].append(btn)
+                        other_key_upper = other_key.upper()
+                        if other_key_upper != other_key_lower:
+                            if other_key_upper not in self.buttons:
+                                self.buttons[other_key_upper] = []
+                            self.buttons[other_key_upper].append(btn)
 
                 # Сохранение базового цвета кнопки
                 self.button_colors[btn] = bg_color
