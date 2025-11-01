@@ -39,22 +39,22 @@ class VirtualKeyboard:
 
         # Английская раскладка клавиатуры (основной символ | символ с Shift)
         self.keyboard_layout_en = [
-            ['Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'],
-            ['` | ~', '1 | !', '2 | @', '3 | #', '4 | $', '5 | %', '6 | ^', '7 | &', '8 | *', '9 | (', '0 | )', '- | _', '= | +', 'Backspace'],
-            ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[ | {', '] | }', '\\ | |'],
-            ['Caps', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '; | :', '\' | "', 'Enter'],
-            ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ', | <', '. | >', '/ | ?', 'Shift'],
-            ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl']
+            ['ESC', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'],
+            ['` | ~', '1 | !', '2 | @', '3 | #', '4 | $', '5 | %', '6 | ^', '7 | &', '8 | *', '9 | (', '0 | )', '- | _', '= | +', 'BACKSPACE'],
+            ['TAB', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[ | {', '] | }', '\\ | |'],
+            ['CAPS', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '; | :', '\' | "', 'ENTER'],
+            ['SHIFT', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ', | <', '. | >', '/ | ?', 'SHIFT'],
+            ['CTRL', 'WIN', 'ALT', 'SPACE', 'ALT', 'WIN', 'MENU', 'CTRL']
         ]
 
         # Русская раскладка клавиатуры (основной символ | символ с Shift)
         self.keyboard_layout_ru = [
-            ['Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'],
-            ['ё | Ё', '1 | !', '2 | "', '3 | №', '4 | ;', '5 | %', '6 | :', '7 | ?', '8 | *', '9 | (', '0 | )', '- | _', '= | +', 'Backspace'],
-            ['Tab', 'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ', '\\ | /'],
-            ['Caps', 'Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д', 'Ж', 'Э', 'Enter'],
-            ['Shift', 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', '. | ,', 'Shift'],
-            ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Win', 'Menu', 'Ctrl']
+            ['ESC', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'],
+            ['Ё | Ё', '1 | !', '2 | "', '3 | №', '4 | ;', '5 | %', '6 | :', '7 | ?', '8 | *', '9 | (', '0 | )', '- | _', '= | +', 'BACKSPACE'],
+            ['TAB', 'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ', '\\ | /'],
+            ['CAPS', 'Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д', 'Ж', 'Э', 'ENTER'],
+            ['SHIFT', 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', '. | ,', 'SHIFT'],
+            ['CTRL', 'WIN', 'ALT', 'SPACE', 'ALT', 'WIN', 'MENU', 'CTRL']
         ]
 
         # Текущая раскладка
@@ -84,24 +84,24 @@ class VirtualKeyboard:
 
         # Маппинг специальных клавиш
         self.key_mapping = {
-            'esc': 'Esc',
+            'esc': 'ESC',
             'f1': 'F1', 'f2': 'F2', 'f3': 'F3', 'f4': 'F4',
             'f5': 'F5', 'f6': 'F6', 'f7': 'F7', 'f8': 'F8',
             'f9': 'F9', 'f10': 'F10', 'f11': 'F11', 'f12': 'F12',
-            'backspace': 'Backspace',
-            'tab': 'Tab',
-            'caps_lock': 'Caps',
-            'enter': 'Enter',
-            'shift': 'Shift',
-            'shift_r': 'Shift',
-            'ctrl': 'Ctrl',
-            'ctrl_r': 'Ctrl',
-            'alt': 'Alt',
-            'alt_r': 'Alt',
-            'cmd': 'Win',
-            'cmd_r': 'Win',
-            'space': 'Space',
-            'menu': 'Menu',
+            'backspace': 'BACKSPACE',
+            'tab': 'TAB',
+            'caps_lock': 'CAPS',
+            'enter': 'ENTER',
+            'shift': 'SHIFT',
+            'shift_r': 'SHIFT',
+            'ctrl': 'CTRL',
+            'ctrl_r': 'CTRL',
+            'alt': 'ALT',
+            'alt_r': 'ALT',
+            'cmd': 'WIN',
+            'cmd_r': 'WIN',
+            'space': 'SPACE',
+            'menu': 'MENU',
         }
         
         self.create_keyboard()
@@ -263,34 +263,34 @@ class VirtualKeyboard:
     def get_key_width(self, key):
         """Определение ширины клавиши"""
         special_widths = {
-            'Backspace': 10,
-            'Tab': 6,
-            'Caps': 7,
-            'Enter': 9,
-            'Shift': 8,
-            'Ctrl': 5,
-            'Win': 5,
-            'Alt': 5,
-            'Space': 25,
-            'Menu': 5,
-            'Esc': 5
+            'BACKSPACE': 10,
+            'TAB': 6,
+            'CAPS': 7,
+            'ENTER': 9,
+            'SHIFT': 8,
+            'CTRL': 5,
+            'WIN': 5,
+            'ALT': 5,
+            'SPACE': 25,
+            'MENU': 5,
+            'ESC': 5
         }
         return special_widths.get(key, 4)
 
     def get_key_weight(self, key):
         """Определение веса клавиши для grid layout (пропорциональное распределение пространства)"""
         special_weights = {
-            'Backspace': 10,
-            'Tab': 6,
-            'Caps': 7,
-            'Enter': 9,
-            'Shift': 8,
-            'Ctrl': 5,
-            'Win': 5,
-            'Alt': 5,
-            'Space': 25,
-            'Menu': 5,
-            'Esc': 5
+            'BACKSPACE': 10,
+            'TAB': 6,
+            'CAPS': 7,
+            'ENTER': 9,
+            'SHIFT': 8,
+            'CTRL': 5,
+            'WIN': 5,
+            'ALT': 5,
+            'SPACE': 25,
+            'MENU': 5,
+            'ESC': 5
         }
         return special_weights.get(key, 4)
     
