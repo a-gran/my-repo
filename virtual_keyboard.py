@@ -44,6 +44,9 @@ class VirtualKeyboard:
         self.typed_text = ""
         self.max_text_length = 50  # Максимальная длина отображаемого текста
 
+        # Состояние Caps Lock
+        self.caps_lock_on = False
+
         # Английская раскладка клавиатуры (основной символ | символ с Shift)
         self.keyboard_layout_en = [
             ['ESC', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'],
@@ -109,6 +112,19 @@ class VirtualKeyboard:
             'cmd_r': 'WIN',
             'space': 'SPACE',
             'menu': 'MENU',
+        }
+
+        # Маппинг английских символов на русские (для правильного отображения текста)
+        self.en_to_ru_map = {
+            'q': 'й', 'w': 'ц', 'e': 'у', 'r': 'к', 't': 'е', 'y': 'н', 'u': 'г', 'i': 'ш', 'o': 'щ', 'p': 'з',
+            'a': 'ф', 's': 'ы', 'd': 'в', 'f': 'а', 'g': 'п', 'h': 'р', 'j': 'о', 'k': 'л', 'l': 'д',
+            'z': 'я', 'x': 'ч', 'c': 'с', 'v': 'м', 'b': 'и', 'n': 'т', 'm': 'ь',
+            'Q': 'Й', 'W': 'Ц', 'E': 'У', 'R': 'К', 'T': 'Е', 'Y': 'Н', 'U': 'Г', 'I': 'Ш', 'O': 'Щ', 'P': 'З',
+            'A': 'Ф', 'S': 'Ы', 'D': 'В', 'F': 'А', 'G': 'П', 'H': 'Р', 'J': 'О', 'K': 'Л', 'L': 'Д',
+            'Z': 'Я', 'X': 'Ч', 'C': 'С', 'V': 'М', 'B': 'И', 'N': 'Т', 'M': 'Ь',
+            '[': 'х', ']': 'ъ', ';': 'ж', "'": 'э', ',': 'б', '.': 'ю', '/': '.',
+            '{': 'Х', '}': 'Ъ', ':': 'Ж', '"': 'Э', '<': 'Б', '>': 'Ю', '?': ',',
+            '`': 'ё', '~': 'Ё'
         }
         
         self.create_keyboard()
@@ -375,6 +391,17 @@ class VirtualKeyboard:
     def add_character(self, char):
         """Добавление символа в отображаемый текст"""
         if char is not None:
+            # Если включена русская раскладка, преобразуем английский символ в русский
+            if self.current_language == 'RU' and char in self.en_to_ru_map:
+                char = self.en_to_ru_map[char]
+
+            # Применяем Caps Lock для букв
+            if char.isalpha():
+                if self.caps_lock_on:
+                    char = char.upper()
+                else:
+                    char = char.lower()
+
             self.typed_text += char
             # Если текст длиннее максимальной длины, обрезаем начало
             if len(self.typed_text) > self.max_text_length:
@@ -399,6 +426,9 @@ class VirtualKeyboard:
             # Очистка текста при нажатии ESC
             self.typed_text = ""
             self.update_text_display()
+        elif key_name == 'caps_lock':
+            # Переключение состояния Caps Lock
+            self.caps_lock_on = not self.caps_lock_on
 
     def update_text_display(self):
         """Обновление отображения набранного текста"""
