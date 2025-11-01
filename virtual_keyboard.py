@@ -95,9 +95,12 @@ class VirtualKeyboard:
         main_frame = tk.Frame(self.root, bg='#2b2b2b', padx=10, pady=10)
         main_frame.pack(fill=tk.BOTH, expand=True)
 
+        # Настройка главного фрейма для растягивания
+        main_frame.columnconfigure(0, weight=1)
+
         # Верхняя панель с заголовком и кнопкой полноэкранного режима
         header_frame = tk.Frame(main_frame, bg='#2b2b2b')
-        header_frame.grid(row=0, column=0, columnspan=15, sticky='ew')
+        header_frame.grid(row=0, column=0, sticky='ew', pady=(0, 10))
 
         # Заголовок
         self.title_label = tk.Label(
@@ -125,21 +128,29 @@ class VirtualKeyboard:
             cursor='hand2'
         )
         self.fullscreen_btn.pack(side=tk.RIGHT, padx=5)
-        
+
+        # Контейнер для клавиатуры
+        keyboard_container = tk.Frame(main_frame, bg='#2b2b2b')
+        keyboard_container.grid(row=1, column=0, sticky='nsew')
+        main_frame.rowconfigure(1, weight=1)
+
         # Создание рядов клавиш
-        for row_idx, row in enumerate(self.keyboard_layout, start=1):
-            row_frame = tk.Frame(main_frame, bg='#2b2b2b')
-            row_frame.grid(row=row_idx, column=0, columnspan=15, pady=2)
-            
-            for key in row:
-                # Определение ширины клавиши
-                width = self.get_key_width(key)
-                
-                # Создание кнопки
+        for row_idx, row in enumerate(self.keyboard_layout):
+            # Настройка растягивания для каждого ряда
+            keyboard_container.rowconfigure(row_idx, weight=1)
+
+            row_frame = tk.Frame(keyboard_container, bg='#2b2b2b')
+            row_frame.grid(row=row_idx, column=0, sticky='ew', pady=2)
+
+            for col_idx, key in enumerate(row):
+                # Настройка растягивания колонки в зависимости от ширины клавиши
+                weight = self.get_key_weight(key)
+                row_frame.columnconfigure(col_idx, weight=weight)
+
+                # Создание кнопки без фиксированной ширины
                 btn = tk.Label(
                     row_frame,
                     text=key,
-                    width=width,
                     height=2,
                     relief=tk.RAISED,
                     bg='#404040',
@@ -147,7 +158,7 @@ class VirtualKeyboard:
                     font=('Arial', 10, 'bold'),
                     borderwidth=2
                 )
-                btn.pack(side=tk.LEFT, padx=2, fill=tk.BOTH, expand=True)
+                btn.grid(row=0, column=col_idx, sticky='nsew', padx=2)
 
                 # Сохранение кнопки в словаре
                 key_lower = key.lower()
@@ -157,7 +168,10 @@ class VirtualKeyboard:
 
                 # Добавление в список для масштабирования
                 self.button_widgets.append(btn)
-        
+
+        # Настройка растягивания для контейнера клавиатуры
+        keyboard_container.columnconfigure(0, weight=1)
+
         # Счетчик нажатий
         self.counter_label = tk.Label(
             main_frame,
@@ -167,8 +181,8 @@ class VirtualKeyboard:
             font=('Arial', 11, 'bold'),
             pady=10
         )
-        self.counter_label.grid(row=len(self.keyboard_layout) + 1, column=0, columnspan=15)
-        
+        self.counter_label.grid(row=2, column=0, sticky='ew')
+
         self.press_count = 0
         
     def get_key_width(self, key):
@@ -187,6 +201,23 @@ class VirtualKeyboard:
             'Esc': 5
         }
         return special_widths.get(key, 4)
+
+    def get_key_weight(self, key):
+        """Определение веса клавиши для grid layout (пропорциональное распределение пространства)"""
+        special_weights = {
+            'Backspace': 10,
+            'Tab': 6,
+            'Caps': 7,
+            'Enter': 9,
+            'Shift': 8,
+            'Ctrl': 5,
+            'Win': 5,
+            'Alt': 5,
+            'Space': 25,
+            'Menu': 5,
+            'Esc': 5
+        }
+        return special_weights.get(key, 4)
     
     def highlight_key(self, key_name):
         """Подсветка клавиши при нажатии"""
