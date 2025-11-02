@@ -1,6 +1,7 @@
 # Virtual Keyboard
 
-[🇷🇺 Russian version](README.md)
+[![Русский](https://img.shields.io/badge/lang-ru-red)](README.md)
+[![English](https://img.shields.io/badge/lang-en-blue)](README_EN.md)
 
 ## Description
 
