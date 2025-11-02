@@ -1,6 +1,6 @@
 # Виртуальная клавиатура
 
-[![Русский](https://img.shields.io/badge/lang-ru-red)](README.md)
+[![Русский](https://img.shields.io/badge/lang-ru-red)](README_RU.md)
 [![English](https://img.shields.io/badge/lang-en-blue)](README_EN.md)
 
 ## Описание
@@ -21,7 +21,7 @@ virtual_keyboard/
 │   ├── services.py            # Сервисы (определение языка и Caps Lock)
 │   └── manager.py             # Менеджер раскладок
 ├── main.py                    # Точка входа в приложение
-├── README.md                  # Документация (RU)
+├── README_RU.md               # Документация (RU)
 ├── README_EN.md               # Документация (EN)
 └── ARCHITECTURE.md            # Техническая документация архитектуры
 ```
