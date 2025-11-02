@@ -148,7 +148,7 @@ class BaseKeyboardVisualizer(ABC):
     def _create_main_frame(self):
         """Создание главного фрейма"""
         self.main_frame = tk.Frame(self.root, bg=UIConfig.BG_COLOR,
-                                   padx=UIConfig.PADDING, pady=UIConfig.PADDING)
+                                   padx=0, pady=UIConfig.PADDING)
         self.main_frame.pack(fill=tk.BOTH, expand=True)
         self.main_frame.columnconfigure(0, weight=1)
 
@@ -220,17 +220,34 @@ class BaseKeyboardVisualizer(ABC):
                        else UIConfig.KEY_DEFAULT_COLOR)
 
             button_size = max(9, int(14 * self.scale_factor))
+
+            # Определяем, является ли клавиша специальной (не квадратной)
+            non_square_keys = ['SHIFT', 'CAPS', 'SPACE', 'TAB', 'ENTER', 'BACKSPACE', '\\ | |', '\\ | /']
+            is_square = base_key not in non_square_keys and key not in non_square_keys
+
+            # Создаем фрейм-контейнер для кнопки с фиксированными размерами
+            btn_container = tk.Frame(row_frame, bg=UIConfig.BG_COLOR)
+            btn_container.grid(row=0, column=col_idx, sticky='nsew', padx=UIConfig.SPACING, pady=UIConfig.SPACING)
+
             btn = tk.Label(
-                row_frame,
+                btn_container,
                 text=key,
                 relief=tk.RAISED,
                 bg=bg_color,
                 fg=UIConfig.FG_COLOR,
                 font=(UIConfig.FONT_FAMILY, button_size, 'bold'),
-                borderwidth=2,
-                width=1
+                borderwidth=2
             )
-            btn.grid(row=0, column=col_idx, sticky='nsew', padx=UIConfig.SPACING, pady=UIConfig.SPACING)
+
+            # Настраиваем размеры в зависимости от типа клавиши
+            if is_square:
+                # Для квадратных клавиш устанавливаем фиксированный минимальный размер 50x50px
+                btn_container.config(width=UIConfig.MIN_KEY_SIZE, height=UIConfig.MIN_KEY_SIZE)
+                btn_container.pack_propagate(False)  # Запрещаем изменение размера контейнера
+                btn.pack(fill=tk.BOTH, expand=True)
+            else:
+                # Для специальных клавиш используем растягивание
+                btn.pack(fill=tk.BOTH, expand=True)
 
             # Регистрируем символы для кнопки
             self._register_button_symbols(key, btn)

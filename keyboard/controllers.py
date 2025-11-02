@@ -45,6 +45,8 @@ class BaseKeyboardController(ABC):
         self.key_mapping = KeyboardLayoutConfig.SPECIAL_KEY_MAPPING.copy()
         # Время последнего нажатия backspace для защиты от двойного срабатывания
         self.last_backspace_time = 0
+        # Время последнего нажатия space для защиты от двойного срабатывания
+        self.last_space_time = 0
 
     @abstractmethod
     def process_character(self, char: str) -> str:
@@ -109,6 +111,13 @@ class BaseKeyboardController(ABC):
                 self.visualizer.update_text_display(self.typed_text)
         # Проверяем, является ли клавиша пробелом
         elif key_name == 'space':
+            # Получаем текущее время для защиты от двойного срабатывания
+            current_time = time.time()
+            # Если прошло менее 50 миллисекунд с последнего space, игнорируем
+            if current_time - self.last_space_time < 0.05:
+                return
+            # Обновляем время последнего нажатия space
+            self.last_space_time = current_time
             # Добавляем символ пробела к набранному тексту
             self.add_character(' ')
         # Проверяем, является ли клавиша Enter
@@ -242,6 +251,19 @@ class BaseKeyboardController(ABC):
 class EnglishKeyboardController(BaseKeyboardController):
     """Контроллер английской клавиатуры"""
 
+    def __init__(self, visualizer: BaseKeyboardVisualizer):
+        """
+        Инициализация контроллера английской клавиатуры
+
+        Args:
+            visualizer: Визуализатор клавиатуры для отображения состояния
+        """
+        # Вызываем конструктор базового класса для инициализации общих полей
+        super().__init__(visualizer)
+        # Создаём словарь для хранения времени последнего нажатия каждой клавиши
+        # Используется для защиты от дублирования символов при быстром нажатии
+        self.last_key_time: Dict[str, float] = {}
+
     def process_character(self, char: str) -> str:
         """
         Обработка английского символа с учётом Caps Lock и Shift
@@ -270,11 +292,25 @@ class EnglishKeyboardController(BaseKeyboardController):
 
     def _handle_character_key(self, key_char: str):
         """
-        Обработка нажатия символьной клавиши
+        Обработка нажатия символьной клавиши с защитой от дублирования
 
         Args:
             key_char: Символ нажатой клавиши
         """
+        # Получаем текущее время в секундах с начала эпохи Unix
+        current_time = time.time()
+        # Проверяем, нажималась ли эта клавиша ранее
+        if key_char in self.last_key_time:
+            # Вычисляем разницу во времени между текущим и предыдущим нажатием
+            time_diff = current_time - self.last_key_time[key_char]
+            # Если прошло менее 50 миллисекунд (0.05 секунды)
+            if time_diff < 0.05:
+                # Игнорируем это нажатие (защита от дублирования)
+                return
+
+        # Сохраняем время текущего нажатия для этой клавиши
+        self.last_key_time[key_char] = current_time
+
         # Планируем подсветку клавиши в главном потоке GUI
         # after(0, ...) выполняет функцию в главном потоке как можно скорее
         self.visualizer.root.after(0, lambda: self.visualizer.highlight_key(key_char, self.key_mapping))
