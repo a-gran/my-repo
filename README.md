@@ -37,8 +37,23 @@ virtual_keyboard/
 
 ### Вариант 2: Запуск из исходного кода
 
+**Windows:**
+
 ```bash
 python main.py
+```
+
+**macOS:**
+
+```bash
+chmod +x run_macos.sh
+./run_macos.sh
+```
+
+Или просто:
+
+```bash
+python3 main.py
 ```
 
 ## Как остановить программу
