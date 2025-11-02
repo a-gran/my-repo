@@ -6,3 +6,8 @@ nul
 NUL
 keylogger.py
 *.log
+
+# PyInstaller build artifacts
+build/
+dist/
+*.spec

@@ -28,6 +28,14 @@ virtual_keyboard/
 
 ## How to Run
 
+### Option 1: Download Pre-built EXE (Recommended)
+
+1. Go to the [Releases](../../releases) section
+2. Download the latest version of `VirtualKeyboard.exe`
+3. Run the file by double-clicking
+
+### Option 2: Run from Source Code
+
 ```bash
 python main.py
 ```
@@ -144,6 +152,12 @@ Layout management:
 
 ## Requirements
 
+### For Running EXE File
+
+No additional dependencies required. Just download and run `VirtualKeyboard.exe`.
+
+### For Running from Source Code
+
 - Python 3.7+
 - tkinter (usually included in standard Python installation)
 - pynput
@@ -153,6 +167,20 @@ Install dependencies:
 ```bash
 pip install pynput
 ```
+
+## Building EXE File (For Developers)
+
+If you want to build the EXE file yourself:
+
+```bash
+# Install PyInstaller
+pip install pyinstaller
+
+# Build executable
+python -m PyInstaller --name="VirtualKeyboard" --onefile --windowed main.py
+```
+
+The finished file will appear in `dist/VirtualKeyboard.exe`.
 
 ## Note
 

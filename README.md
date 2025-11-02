@@ -28,6 +28,14 @@ virtual_keyboard/
 
 ## Как запустить
 
+### Вариант 1: Скачать готовый EXE файл (рекомендуется)
+
+1. Перейдите в раздел [Releases](../../releases)
+2. Скачайте последнюю версию `VirtualKeyboard.exe`
+3. Запустите файл двойным кликом
+
+### Вариант 2: Запуск из исходного кода
+
 ```bash
 python main.py
 ```
@@ -144,6 +152,12 @@ python main.py
 
 ## Требования
 
+### Для запуска EXE файла
+
+Никаких дополнительных зависимостей не требуется. Просто скачайте и запустите `VirtualKeyboard.exe`.
+
+### Для запуска из исходного кода
+
 - Python 3.7+
 - tkinter (обычно входит в стандартную установку Python)
 - pynput
@@ -153,6 +167,20 @@ python main.py
 ```bash
 pip install pynput
 ```
+
+## Сборка EXE файла (для разработчиков)
+
+Если вы хотите собрать EXE файл самостоятельно:
+
+```bash
+# Установите PyInstaller
+pip install pyinstaller
+
+# Соберите executable
+python -m PyInstaller --name="VirtualKeyboard" --onefile --windowed main.py
+```
+
+Готовый файл появится в папке `dist/VirtualKeyboard.exe`.
 
 ## Примечание
 
