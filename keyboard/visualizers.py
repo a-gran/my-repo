@@ -219,7 +219,7 @@ class BaseKeyboardVisualizer(ABC):
             bg_color = (UIConfig.KEY_ACCENT_COLOR if base_key.upper() in home_row_keys
                        else UIConfig.KEY_DEFAULT_COLOR)
 
-            button_size = max(6, int(10 * self.scale_factor))
+            button_size = max(7, int(12 * self.scale_factor))
             btn = tk.Label(
                 row_frame,
                 text=key,
