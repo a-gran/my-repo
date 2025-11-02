@@ -173,6 +173,3 @@ You can modify the program to:
 
 For detailed information about the architecture, design patterns, and implementation details, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
-## License
-
-This project is for educational purposes.
