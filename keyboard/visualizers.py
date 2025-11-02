@@ -206,7 +206,7 @@ class BaseKeyboardVisualizer(ABC):
             if row_idx not in row_frames:
                 keyboard_container.rowconfigure(row_idx, weight=1)
                 row_frame = tk.Frame(keyboard_container, bg=UIConfig.BG_COLOR)
-                row_frame.grid(row=row_idx, column=0, sticky='nsew', pady=UIConfig.SPACING)
+                row_frame.grid(row=row_idx, column=0, sticky='nsew', pady=0)
                 row_frame.rowconfigure(0, weight=1)
                 row_frames[row_idx] = row_frame
             else:
@@ -228,8 +228,7 @@ class BaseKeyboardVisualizer(ABC):
                 fg=UIConfig.FG_COLOR,
                 font=(UIConfig.FONT_FAMILY, button_size, 'bold'),
                 borderwidth=2,
-                width=1,
-                pady=2
+                width=1
             )
             btn.grid(row=0, column=col_idx, sticky='nsew', padx=UIConfig.SPACING, pady=UIConfig.SPACING)
 
