@@ -98,8 +98,8 @@ class BaseKeyboardController(ABC):
         if key_name == 'backspace':
             # Получаем текущее время для защиты от двойного срабатывания
             current_time = time.time()
-            # Если прошло менее 50 миллисекунд с последнего backspace, игнорируем
-            if current_time - self.last_backspace_time < 0.05:
+            # Если прошло менее 100 миллисекунд с последнего backspace, игнорируем
+            if current_time - self.last_backspace_time < 0.1:
                 return
             # Обновляем время последнего нажатия backspace
             self.last_backspace_time = current_time
@@ -113,8 +113,8 @@ class BaseKeyboardController(ABC):
         elif key_name == 'space':
             # Получаем текущее время для защиты от двойного срабатывания
             current_time = time.time()
-            # Если прошло менее 50 миллисекунд с последнего space, игнорируем
-            if current_time - self.last_space_time < 0.05:
+            # Если прошло менее 100 миллисекунд с последнего space, игнорируем
+            if current_time - self.last_space_time < 0.1:
                 return
             # Обновляем время последнего нажатия space
             self.last_space_time = current_time
